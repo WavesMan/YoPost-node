@@ -1,6 +1,6 @@
 # SMTP邮件服务配置
 smtp:
-  host: "smtp.example.com"  # SMTP服务器地址
+  host: "localhost"         # 主机名，默认localhost
   NoTLSport: 25             # 端口号，默认25
   TLSport1: 587             # 端口号，默认587
   TLSport2: 465             # 端口号，默认465
@@ -9,3 +9,14 @@ smtp:
   secure: false             # 是否使用TLS
   tls:
     rejectUnauthorized: false # 是否验证证书
+
+# IMAP邮件服务配置
+imap:
+  host: "localhost"         # 主机名，默认localhost
+  port: 993                 # 端口号，默认993
+  user: "your_username"     # 用户名
+  password: "your_password" # 密码
+  tls: true                 # 是否使用TLS
+  tlsOptions:               # TLS选项
+    rejectUnauthorized: false # 是否验证证书
+  mailbox: "INBOX"         # 默认邮箱

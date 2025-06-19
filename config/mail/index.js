@@ -23,6 +23,10 @@ class MailConfig {
         return this.config.smtp || {};
     }
 
+    getImapConfig() {
+        return this.config.imap || {};
+    }
+
     reload() {
         this.config = this.loadConfig();
         return this.config;
@@ -34,6 +38,17 @@ class MailConfig {
             return await this.tlsConfig.verifyCertificate(
                 smtpConfig.host, 
                 smtpConfig.TLSport1 || smtpConfig.TLSport2 || smtpConfig.NoTLSport
+            );
+        }
+        return { isValid: false, error: 'TLS not enabled' };
+    }
+
+    async verifyImapTls() {
+        const imapConfig = this.getImapConfig();
+        if (imapConfig.tls) {
+            return await this.tlsConfig.verifyCertificate(
+                imapConfig.host, 
+                imapConfig.port
             );
         }
         return { isValid: false, error: 'TLS not enabled' };
