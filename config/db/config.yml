@@ -1,0 +1,16 @@
+# 数据库配置
+databases:
+  # MySQL 8.0
+  mysql:
+    host: "localhost"
+    port: 3306
+    user: "yopost"
+    password: "123456"
+    database: "yopost"
+  # MongoDB 7.0
+  mongodb:
+    host: "localhost"
+    port: 27017
+    user: "yopost"
+    password: "123456"
+    database: "yopost"

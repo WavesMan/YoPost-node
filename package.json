@@ -1,0 +1,40 @@
+{
+  "name": "yopost-node",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node index.js",
+    "dev": "nodemon index.js",
+    "build": "echo \"No build step required\" && exit 0",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.12.1",
+  "dependencies": {
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "nodemailer": "^6.9.5",
+    "js-yaml": "^4.1.0",
+    "module-alias": "^2.2.3",
+    "mysql2": "^3.9.3",
+    "winston": "^3.11.0",
+    "mongodb": "^6.6.1"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.0",
+    "eslint": "^9.3.0",
+    "prettier": "^3.2.5"
+  },
+  "_moduleAliases": {
+    "@config": "./config",
+    "@core": "./core",
+    "@db": "./config/db",
+    "@start": "./start",
+    "@core/logger": "./core/logger"
+  }
+}

@@ -1,0 +1,9 @@
+# TLS验证配置
+tls:
+  verify: true                   # 是否启用TLS验证
+  expiryWarningDays: 30          # 证书到期前多少天发出警告
+  storePath: "./certs"           # 证书存储路径
+  checkInterval: 86400           # 检查间隔(秒)，默认1天
+  allowedDomains:                # 允许的域名列表
+    - "example.com"
+    - "yopost.com"

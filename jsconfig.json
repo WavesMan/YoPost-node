@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@config/*": ["config/*"],
+      "@core/*": ["core/*"],
+      "@db/*": ["config/db/*"],
+      "@core/logger": ["./core/logger"]
+    }
+  }
+}
