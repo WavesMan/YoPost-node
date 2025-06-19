@@ -7,17 +7,11 @@ const path = require('path');
 class SMTPCore {
     constructor() {
         this.config = mailConfig.getSmtpConfig();
-        this.mailDir = path.join(__dirname, '../../storage/mail');
-        this.initStorage();
-        logger.debug('Initializing SMTP server with config:', this.config);
+        logger.debug('Initializing SMTP client with config:', this.config);
         
-        const defaultPort = this.config.secure ? 
-            (this.config.TLSport1 || this.config.TLSport2 || 465) : 
-            (this.config.NoTLSport || 25);
-            
         this.transporter = nodemailer.createTransport({
             host: this.config.host || 'localhost',
-            port: this.config.port || defaultPort,
+            port: this.config.port || (this.config.secure ? 465 : 25),
             secure: this.config.secure || false,
             auth: this.config.user ? {
                 user: this.config.user,
@@ -27,12 +21,10 @@ class SMTPCore {
                 rejectUnauthorized: this.config.tls?.rejectUnauthorized || false
             },
             connectionTimeout: 5000,
-            socketTimeout: 10000,
-            onData: (stream, callback) => this.handleIncomingMail(stream, callback)
+            socketTimeout: 10000
         });
         
-        this.initEventHandlers();
-        logger.info('SMTP server initialized');
+        logger.info('SMTP client initialized');
     }
 
     initStorage() {

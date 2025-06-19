@@ -4,12 +4,10 @@ const logger = require('@core/logger');
 module.exports = {
     async init() {
         try {
-            logger.debug('Initializing IMAP connection...');
-            await imapCore.verify();
-            logger.info('IMAP connection verified successfully');
+            logger.debug('Initializing IMAP...');
             return imapCore;
         } catch (error) {
-            logger.error('Failed to initialize IMAP connection:', error);
+            logger.error('Failed to initialize IMAP:', error);
             throw error;
         }
     }

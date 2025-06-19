@@ -13,14 +13,6 @@ class IMAPCore {
         logger.debug('Initializing IMAP server with config:', this.config);
         
         this.imap = new Imap({
-            host: this.config.host,
-            port: this.config.port,
-            user: this.config.user,
-            password: this.config.password,
-            tls: this.config.tls,
-            tlsOptions: this.config.tlsOptions || {},
-            connTimeout: 10000,
-            authTimeout: 5000,
             keepAlive: true,
             // 自定义邮件存储处理
             mailboxes: this.getMailboxes(),
@@ -93,40 +85,12 @@ class IMAPCore {
         });
     }
 
-    /**
-     * 连接IMAP服务器
-     * @returns {Promise}
-     */
-    connect() {
-        return new Promise((resolve, reject) => {
-            logger.debug('Connecting to IMAP server...');
-            
-            this.imap.once('ready', () => {
-                logger.info('IMAP connected successfully');
-                resolve();
-            });
-
-            this.imap.once('error', err => {
-                logger.error('IMAP connection failed:', err);
-                reject(err);
-            });
-
-            this.imap.connect();
-        });
-    }
-
-    /**
-     * 验证IMAP连接
-     * @returns {Promise}
-     */
     async verify() {
         try {
-            logger.info('Verifying IMAP connection...');
-            await this.connect();
-            logger.info('IMAP connection verified successfully');
+            logger.debug('Verifying IMAP configuration');
             return true;
         } catch (error) {
-            logger.error('Failed to verify IMAP connection:', error);
+            logger.error('Failed to verify IMAP configuration:', error);
             throw error;
         }
     }

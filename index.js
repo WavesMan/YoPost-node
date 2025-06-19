@@ -3,11 +3,14 @@ require('module-alias/register');
 const express = require('express');
 const dbCore = require('@core/db');
 const smtpCore = require('@core/mail/smtp');
+const imapCore = require('@core/mail/imap');
 const logger = require('@core/logger');
 
 class App {
     constructor() {
         this.port = process.env.PORT || 3000;
+        this.isDev = process.env.NODE_ENV === 'development';
+        this.errors = [];
     }
 
     async initialize() {
@@ -20,14 +23,32 @@ class App {
             const startServer = require('./start/server');
             
             // 按顺序初始化
-            await startDB.init();
-            await startMail.init();
-            await startServer.init(this.port);
+            await this.runWithErrorHandling(startDB.init, 'Database');
+            await this.runWithErrorHandling(startMail.init, 'Mail');
+            await this.runWithErrorHandling(() => startServer.init(this.port), 'Server');
             
-            logger.info('Application initialized successfully');
+            if (this.errors.length > 0) {
+                logger.error('Application initialized with errors:', this.errors);
+            } else {
+                logger.info('Application initialized successfully');
+            }
         } catch (error) {
             logger.error('Failed to initialize application:', error);
             process.exit(1);
+        }
+    }
+
+    async runWithErrorHandling(fn, moduleName) {
+        try {
+            await fn();
+            logger.info(`${moduleName} initialized successfully`);
+        } catch (error) {
+            logger.error(`${moduleName} initialization failed:`, error);
+            this.errors.push({ module: moduleName, error });
+            
+            if (!this.isDev) {
+                throw error;
+            }
         }
     }
 }
